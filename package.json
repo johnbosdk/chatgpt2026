@@ -1,0 +1,15 @@
+{
+  "name": "luxaura-storefront",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static Luxaura storefront with an obfuscated browser JavaScript build",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "node build.js"
+  },
+  "dependencies": {
+    "javascript-obfuscator": "^4.1.1"
+  }
+}
