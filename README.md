@@ -1,36 +1,46 @@
-# Luxaura-style storefront starter
+# Luxaura-style storefront
 
-A responsive static storefront inspired by the visual structure of the referenced public page. It is a fresh implementation, not the original site's source code.
+A responsive static storefront starter. This repository now includes a build step that obfuscates the browser JavaScript before deployment.
 
-## Included
-- Responsive navigation and editorial hero
-- Collections, product cards, journal, newsletter and footer
-- Working demo filters, wishlist counter, shopping bag and quantity controls
-- No backend, customer database, email collection or payment processing
+## Files
 
-## Run locally
-Open `index.html` in a browser. For a local web server, run:
+- `index.html`, `styles.css`, `script.js`: readable source files
+- `build.js`: creates the deployable `dist/` directory
+- `package.json`: installs `javascript-obfuscator`
+- `dist/script.obfuscated.js`: generated during build; not committed
+
+## Build locally
+
+Use Node.js 18 or newer:
+
 ```bash
-python -m http.server 8000
+npm install
+npm run build
 ```
-Then visit `http://localhost:8000`.
 
-## Deploy to DigitalOcean App Platform
-1. Create a GitHub repository and upload `index.html`, `styles.css`, `script.js`, and this README.
-2. In DigitalOcean, choose **Create → App Platform**.
-3. Connect the repository and select its `main` branch.
-4. Select **Static Site**. Leave the output directory empty if the files are at the repository root.
-5. Deploy and open the generated `ondigitalocean.app` URL.
-6. Add a custom domain in App Platform settings if desired.
+The generated static website is in `dist/`. Test it locally by serving that folder, for example:
 
-Official guide: https://docs.digitalocean.com/products/app-platform/getting-started/quickstart/
+```bash
+npx serve dist
+```
 
-## DigitalOcean Spaces
-You can upload image assets to Spaces and change the image URLs in `index.html` to your own public asset URLs. Keep API keys and private credentials out of frontend files.
+The generated `index.html` loads `script.obfuscated.js` instead of the readable `script.js`.
 
-## Before production
-- Replace demo product copy and ensure you have permission to use all product imagery.
-- Connect a real backend for inventory, accounts, order management and email subscriptions.
-- Use a reputable payment provider's hosted checkout or server-side integration.
-- Add privacy policy, terms, shipping/returns policies, accessibility checks and security headers.
-- Never treat the demo cart as a secure order or payment system.
+## DigitalOcean App Platform
+
+Do not point the production app at this branch until it has been tested. For a separate staging app, connect this repository and select the `javascript-protection` branch, then configure:
+
+- **Component type:** Static Site
+- **Build command:** `npm install && npm run build`
+- **Output directory:** `dist`
+- **Source directory:** repository root
+
+Deploy the staging app and test navigation, product filters, wishlist, shopping bag, quantity controls, newsletter form and mobile layout. Keep the existing production app on its current branch until staging passes.
+
+## Important security limitation
+
+JavaScript running in a browser can always be downloaded and inspected by visitors. Obfuscation makes the code harder to read, but it does not make it secret or provide strong source-code protection. Never put API keys, passwords, private credentials, payment secrets or sensitive business rules in browser JavaScript. Move those to a server-side service.
+
+## Storefront limitations
+
+This is a demo storefront. The cart and wishlist run in the browser; checkout does not process payments, and the newsletter form does not send or store email addresses. Connect trusted backend services before accepting real orders or customer data.
