@@ -4,7 +4,7 @@
   "private": true,
   "description": "Static Luxaura storefront with an obfuscated browser JavaScript build",
   "engines": {
-    "node": ">=18"
+    "node": "22.x"
   },
   "scripts": {
     "build": "node build.js"
